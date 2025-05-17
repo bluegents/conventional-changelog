@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Bluegents\ConventionalChangelog\Command\GenerateCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application('Conventional Changelog Generator', '1.0.0');
+$application->add(new GenerateCommand());
+$application->setDefaultCommand('generate', true);
+$application->run();

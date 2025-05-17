@@ -1,0 +1,31 @@
+# Dependencies
+/vendor
+
+# IDE
+/.idea
+/.vscode
+/.phpstorm.meta.php
+/_ide_helper.php
+/_ide_helper_models.php
+
+# Cache and logs
+*.cache
+*.log
+.phpunit.result.cache
+.php_cs.cache
+.php-cs-fixer.cache
+/.phpunit.cache/*
+
+# Build files
+/build
+/dist
+
+# Environment files
+/.env
+/.env.backup
+/.env.local
+/.env.*.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
