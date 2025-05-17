@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Unit;
 
 use Bluegents\ConventionalChangelog\CommitParser;
+use DateTime;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class CommitParserTest extends TestCase
@@ -74,7 +76,7 @@ class CommitParserTest extends TestCase
 
     public function test_parse_invalid_commit()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->parser->parse(
             'QRST1234',
             'invalid commit message',
@@ -92,7 +94,7 @@ class CommitParserTest extends TestCase
 
         $this->assertEquals('docs', $commit->getType());
         $this->assertEquals('update documentation', $commit->getDescription());
-        $this->assertEquals(new \DateTime('2023-10-01 12:00:00'), $commit->getDate());
+        $this->assertEquals(new DateTime('2023-10-01 12:00:00'), $commit->getDate());
     }
 
     public function test_parse_commit_with_footer()
@@ -111,7 +113,7 @@ class CommitParserTest extends TestCase
 
     public function test_parse_commit_with_empty_description()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->parser->parse(
             'CDEF1234',
             'fix: ',
@@ -121,7 +123,7 @@ class CommitParserTest extends TestCase
 
     public function test_parse_commit_with_empty_type()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->parser->parse(
             'GHJK1234',
             ': fix issue',

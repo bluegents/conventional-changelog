@@ -89,11 +89,9 @@ class GenerateCommand extends Command
             $changelogGenerator = new ChangelogGenerator($config, $commitParser);
             $versionGenerator = new VersionGenerator();
 
-            // Check if multi-release mode is enabled
             $multiRelease = $input->getOption('multi-release');
 
             if ($multiRelease) {
-                // Get commits grouped by release
                 $releases = $gitService->getCommitsByRelease($input->getOption('from'), $input->getOption('to'));
 
                 if (empty($releases)) {
@@ -116,7 +114,6 @@ class GenerateCommand extends Command
                     ));
                 }
             } else {
-                // Original single-release mode
                 $gitCommits = $gitService->getCommits($input->getOption('from'), $input->getOption('to'));
 
                 if (empty($gitCommits)) {
