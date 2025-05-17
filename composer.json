@@ -1,0 +1,46 @@
+{
+    "name": "bluegents/conventional-changelog",
+    "type": "library",
+    "description": "A simple library to generate a conventional changelog.",
+    "keywords": [
+        "changelog",
+        "conventional",
+        "git",
+        "release"
+    ],
+    "version": "1.0.0",
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.2",
+        "symfony/process": "^7.2"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.13",
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bluegents\\ConventionalChangelog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/changelog"
+    ],
+    "scripts": {
+        "changelog": "Bluegents\\ConventionalChangelog\\Command\\GenerateCommand",
+        "test": "phpunit",
+        "pint": "pint",
+        "pint:test": "pint --test"
+    },
+    "authors": [
+        {
+            "name": "Kevin Kerstjens",
+            "email": "k.kerstjens@bluegents.nl"
+        }
+    ]
+}
