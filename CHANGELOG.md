@@ -1,4 +1,7 @@
-## Unreleased - 2025-05-17
+## 1.1.1 - 2025-05-18
+
+### 🐛 fix
+- corrigeer onjuiste versienummering (commit: ccb494f)
 
 ### 🔨 chore
 - **release:** publiceer versie 1.1.0 (commit: 0ad9dd0)

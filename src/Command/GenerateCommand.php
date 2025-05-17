@@ -84,7 +84,7 @@ class GenerateCommand extends Command
         try {
             $config = $this->loadConfiguration($input);
 
-            $gitService = new GitService(getcwd());
+            $gitService = $this->createGitService();
             $commitParser = new CommitParser();
             $changelogGenerator = new ChangelogGenerator($config, $commitParser);
             $versionGenerator = new VersionGenerator();
@@ -195,8 +195,8 @@ class GenerateCommand extends Command
 
         $currentVersion = $this->getLatestVersionFromGit();
         if ($currentVersion === null) {
-            $output->writeln('<comment>No version tags found, starting with 0.0.0</comment>');
-            $currentVersion = '0.0.0';
+            $output->writeln('<comment>No version tags found, starting with 0.1.0</comment>');
+            $currentVersion = '0.1.0';
         }
 
         return $versionGenerator->determineNextVersion($currentVersion, $commits);
@@ -218,5 +218,10 @@ class GenerateCommand extends Command
         }
 
         return null;
+    }
+
+    protected function createGitService(): GitService
+    {
+        return new GitService(getcwd());
     }
 }

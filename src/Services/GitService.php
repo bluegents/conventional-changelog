@@ -72,12 +72,10 @@ class GitService
     {
         $tags = $this->getTags();
 
-        // Filter tags to only include version tags (e.g., 1.0.0, v1.0.0)
-        $tags = array_filter($tags, function($tag) {
+        $tags = array_filter($tags, function ($tag) {
             return preg_match('/^v?\d+\.\d+\.\d+$/', $tag['name']);
         });
 
-        // Re-index array after filtering
         $tags = array_values($tags);
 
         if ($from) {
@@ -94,7 +92,6 @@ class GitService
             }
         }
 
-        // Add the current HEAD as a pseudo-tag if it's not already included
         if ($to === 'HEAD') {
             array_unshift($tags, [
                 'name' => 'HEAD',
@@ -110,15 +107,10 @@ class GitService
             $currentTag = $tags[$i];
             $previousTag = $tags[$i + 1] ?? null;
 
-            $range = $previousTag ? "{$previousTag['name']}..{$currentTag['name']}" : $currentTag['name'];
             $commits = $this->getCommits($previousTag ? $previousTag['name'] : null, $currentTag['name']);
 
             if (! empty($commits)) {
-                // Extract version number without 'v' prefix if present
                 $version = $currentTag['name'];
-                if (preg_match('/^v?(\d+\.\d+\.\d+)$/', $version, $matches)) {
-                    $version = $matches[1];
-                }
 
                 $releases[] = [
                     'name' => $version,
