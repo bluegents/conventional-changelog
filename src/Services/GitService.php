@@ -72,7 +72,7 @@ class GitService
             'git',
             'tag',
             '--sort=-v:refname',
-            '--format=%(refname:short)|%(taggerdate:iso)|%(objectname)',
+            '--format=%(refname:short)|%(taggerdate:iso)|%(objectname:short)',
         ]);
         $process->setWorkingDirectory($this->repositoryPath);
 
@@ -149,7 +149,7 @@ class GitService
             'git',
             'log',
             $range,
-            '--pretty=format:%H|%s|%cd',
+            '--pretty=format:%h|%s|%cd',
             '--date=iso',
         ]);
         $process->setWorkingDirectory($this->repositoryPath);
