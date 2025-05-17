@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bluegents\ConventionalChangelog\Models;
 
+use DateTimeInterface;
+
 class Commit
 {
     public function __construct(
@@ -14,7 +16,7 @@ class Commit
         private bool $isBreaking = false,
         private ?string $body = null,
         private ?string $footer = null,
-        private ?\DateTimeInterface $date = null
+        private ?DateTimeInterface $date = null
     ) {
     }
 
@@ -53,7 +55,7 @@ class Commit
         return $this->footer;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }

@@ -33,12 +33,6 @@ class GitService
         }, array_filter(explode("\n", $process->getOutput())));
     }
 
-    /**
-     * Get all tags in the repository, sorted by date.
-     *
-     * @return array Array of tags with name, date, and hash
-     * @throws RuntimeException If the git command fails
-     */
     public function getTags(): array
     {
         $process = $this->createTagsProcess();
@@ -61,11 +55,6 @@ class GitService
         return $tags;
     }
 
-    /**
-     * Create a new Process instance for git tag command.
-     *
-     * @return Process
-     */
     protected function createTagsProcess(): Process
     {
         $process = new Process([
@@ -79,19 +68,10 @@ class GitService
         return $process;
     }
 
-    /**
-     * Get commits grouped by release.
-     *
-     * @param string|null $from Start commit/tag to generate from
-     * @param string $to End commit/tag to generate to
-     * @return array Array of releases with name, date, and commits
-     * @throws RuntimeException If the git command fails
-     */
     public function getCommitsByRelease(?string $from = null, string $to = 'HEAD'): array
     {
         $tags = $this->getTags();
 
-        // Filter tags to only include those in the specified range
         if ($from) {
             $fromIndex = array_search($from, array_column($tags, 'name'));
             if ($fromIndex !== false) {
@@ -137,12 +117,6 @@ class GitService
         return $releases;
     }
 
-    /**
-     * Create a new Process instance for git log command.
-     *
-     * @param string $range The git range to get commits for
-     * @return Process
-     */
     protected function createProcess(string $range): Process
     {
         $process = new Process([

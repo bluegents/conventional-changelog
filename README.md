@@ -65,7 +65,7 @@ Je kunt een JSON-configuratiebestand maken om het gedrag van de changelog genera
 }
 ```
 
-- `types`: Een array van commit types die in de changelog moeten worden opgenomen
+- `types`: Een array van commit types die in de changelog moeten worden opgenomen (elk type wordt weergegeven met een bijpassend icoon)
 - `show_breaking`: Of breaking changes apart moeten worden weergegeven (boolean)
 - `output_file`: Het pad naar het uitvoerbestand
 
@@ -90,6 +90,28 @@ feat(api): voeg nieuwe endpoint toe voor gebruikersauthenticatie
 
 BREAKING CHANGE: verwijdert de oude authenticatiemethode
 ```
+
+## Git Workflow en Branches
+
+### Welke branch gebruiken voor changelog generatie
+
+Bij het gebruik van verschillende Git workflows is het belangrijk om de juiste branch te gebruiken voor het genereren van een changelog:
+
+#### Git Flow (main, develop, feature, release, hotfix, support)
+- **main/master branch**: Gebruik deze branch voor het genereren van changelogs voor officiële releases. Deze branch bevat de stabiele, productie-klare code.
+- **release branches**: Gebruik deze branches voor het genereren van changelogs voor aankomende releases tijdens de testfase.
+- **develop branch**: Gebruik deze branch voor het genereren van changelogs voor interne ontwikkelversies.
+- **feature/hotfix/support branches**: Deze branches zijn meestal niet geschikt voor het genereren van changelogs, omdat ze vaak onvolledige of tijdelijke wijzigingen bevatten.
+
+#### Eenvoudigere workflows
+- **Bij main en develop**: Gebruik main voor officiële releases en develop voor interne ontwikkelversies.
+- **Bij main, develop en feature**: Gebruik main voor officiële releases, develop voor interne ontwikkelversies, en genereer geen changelogs van feature branches.
+
+### Praktisch advies
+1. **Zorg dat je op de juiste branch staat**: Controleer altijd eerst op welke branch je staat met `git branch` voordat je een changelog genereert.
+2. **Voor officiële releases**: Genereer changelogs altijd vanaf de main/master branch.
+3. **Voor ontwikkelversies**: Genereer changelogs vanaf de develop branch om wijzigingen te documenteren die nog niet in productie zijn.
+4. **Gebruik tags**: Maak gebruik van tags om releases te markeren en gebruik deze tags bij het genereren van changelogs met de `--from` en `--to` opties.
 
 ## Testen
 

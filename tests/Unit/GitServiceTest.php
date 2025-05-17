@@ -128,7 +128,6 @@ class GitServiceTest extends TestCase
             ->onlyMethods(['createTagsProcess'])
             ->getMock();
 
-        // Mock the createTagsProcess method
         $gitService->expects($this->once())
             ->method('createTagsProcess')
             ->willReturn($processMock);

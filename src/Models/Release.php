@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Bluegents\ConventionalChangelog\Models;
 
+use DateTimeInterface;
+
 class Release
 {
     public function __construct(
         private string $version,
-        private \DateTimeInterface $date,
+        private DateTimeInterface $date,
         private array $commits = []
     ) {
     }
@@ -18,7 +20,7 @@ class Release
         return $this->version;
     }
 
-    public function getDate(): \DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }

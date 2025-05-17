@@ -40,7 +40,8 @@ class GenerateCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('Invalid conventional commit message', $output);
+        $this->assertStringContainsString('No version tags found, starting with 0.1.0', $output);
+        $this->assertStringContainsString('## 0.2.0', $output);
     }
 
     public function test_execute_with_custom_release_version()
@@ -52,7 +53,7 @@ class GenerateCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('Invalid conventional commit message', $output);
+        $this->assertStringContainsString('## 2.0.0', $output);
     }
 
     public function test_execute_with_custom_output_file()
@@ -64,7 +65,8 @@ class GenerateCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('Invalid conventional commit message', $output);
+        $this->assertStringContainsString('No version tags found, starting with 0.1.0', $output);
+        $this->assertStringContainsString('## 0.2.0', $output);
     }
 
     public function test_command_configuration()

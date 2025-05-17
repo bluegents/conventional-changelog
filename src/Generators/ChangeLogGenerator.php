@@ -7,22 +7,29 @@ namespace Bluegents\ConventionalChangelog\Generators;
 use Bluegents\ConventionalChangelog\CommitParser;
 use Bluegents\ConventionalChangelog\Configuration;
 use Bluegents\ConventionalChangelog\Models\Release;
+use DateTime;
 
 class ChangeLogGenerator
 {
+    private array $typeIcons = [
+        'feat' => '✨',
+        'fix' => '🐛',
+        'docs' => '📝',
+        'style' => '💄',
+        'refactor' => '♻️',
+        'perf' => '⚡️',
+        'test' => '✅',
+        'build' => '🔧',
+        'ci' => '👷',
+        'chore' => '🔨',
+    ];
+
     public function __construct(
         private Configuration $configuration,
         private CommitParser $commitParser
     ) {
     }
 
-    /**
-     * Generate a changelog for a single release.
-     *
-     * @param array $gitCommits Array of git commits
-     * @param string|null $newVersion Version number for the release
-     * @return string Generated changelog in markdown format
-     */
     public function generate(
         array $gitCommits,
         ?string $newVersion
@@ -32,16 +39,13 @@ class ChangeLogGenerator
             $gitCommits
         );
 
-        $release = new Release($newVersion ?: 'Unreleased', new \DateTime(), $commits);
+        $release = new Release($newVersion ?: 'Unreleased', new DateTime(), $commits);
 
         return $this->generateMarkdown($release);
     }
 
     /**
-     * Generate a changelog for multiple releases.
-     *
-     * @param array $releases Array of releases, each with name, date, and commits
-     * @return string Generated changelog in markdown format
+     * @throws \Exception
      */
     public function generateMultiRelease(array $releases): string
     {
@@ -54,7 +58,7 @@ class ChangeLogGenerator
             );
 
             $version = $releaseData['name'] === 'HEAD' ? 'Unreleased' : $releaseData['name'];
-            $date = $releaseData['date'] ? new \DateTime($releaseData['date']) : new \DateTime();
+            $date = $releaseData['date'] ? new DateTime($releaseData['date']) : new DateTime();
 
             $release = new Release($version, $date, $commits);
 
@@ -77,7 +81,8 @@ class ChangeLogGenerator
         }
 
         foreach ($grouped as $type => $commits) {
-            $output .= "### {$type}\n";
+            $icon = $this->typeIcons[$type] ?? '';
+            $output .= "### {$icon} {$type}\n";
             foreach ($commits as $commit) {
                 $scope = $commit->getScope() ? "**{$commit->getScope()}:** " : '';
                 $output .= "- {$scope}{$commit->getDescription()} (commit: {$commit->getHash()})\n";
@@ -86,7 +91,7 @@ class ChangeLogGenerator
         }
 
         if ($this->configuration->get('show_breaking') && $release->hasBreakingChanges()) {
-            $output .= "### Breaking Changes\n";
+            $output .= "### 💥 Breaking Changes\n";
             foreach ($release->getBreakingChanges() as $change) {
                 $output .= "- {$change->getDescription()} (commit: {$change->getHash()})\n";
             }
