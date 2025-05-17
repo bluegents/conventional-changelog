@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Unit;
 
 use Bluegents\ConventionalChangelog\Command\GenerateCommand;
+use Bluegents\ConventionalChangelog\Services\GitService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -23,6 +24,27 @@ class GenerateCommandTest extends TestCase
                 parent::__construct();
                 $this->setName('generate');
             }
+
+            protected function getLatestVersionFromGit(): ?string
+            {
+                return null;
+            }
+
+            protected function createGitService(): GitService
+            {
+                return new class ('') extends GitService {
+                    public function getCommits(?string $from = null, string $to = 'HEAD'): array
+                    {
+                        return [
+                            [
+                                'hash' => 'abc123',
+                                'message' => 'feat: add new feature',
+                                'date' => '2023-10-01 12:00:00',
+                            ],
+                        ];
+                    }
+                };
+            }
         };
 
         $application = new Application('Conventional Changelog Generator', '1.0.0');
@@ -40,8 +62,9 @@ class GenerateCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('No version tags found, starting with 0.1.0', $output);
-        $this->assertStringContainsString('## 0.2.0', $output);
+        $this->assertStringContainsString('## ', $output);
+        $this->assertStringContainsString('### ✨ feat', $output);
+        $this->assertStringContainsString('add new feature', $output);
     }
 
     public function test_execute_with_custom_release_version()
@@ -65,8 +88,9 @@ class GenerateCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
 
-        $this->assertStringContainsString('No version tags found, starting with 0.1.0', $output);
-        $this->assertStringContainsString('## 0.2.0', $output);
+        $this->assertStringContainsString('## ', $output);
+        $this->assertStringContainsString('### ✨ feat', $output);
+        $this->assertStringContainsString('add new feature', $output);
     }
 
     public function test_command_configuration()

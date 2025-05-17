@@ -83,7 +83,16 @@ class ChangeLogGenerator
         foreach ($grouped as $type => $commits) {
             $icon = $this->typeIcons[$type] ?? '';
             $output .= "### {$icon} {$type}\n";
+
+            $uniqueCommits = [];
             foreach ($commits as $commit) {
+                $key = $commit->getScope() . '|' . $commit->getDescription();
+                if (! isset($uniqueCommits[$key])) {
+                    $uniqueCommits[$key] = $commit;
+                }
+            }
+
+            foreach ($uniqueCommits as $commit) {
                 $scope = $commit->getScope() ? "**{$commit->getScope()}:** " : '';
                 $output .= "- {$scope}{$commit->getDescription()} (commit: {$commit->getHash()})\n";
             }
