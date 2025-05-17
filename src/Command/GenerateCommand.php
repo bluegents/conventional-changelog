@@ -195,8 +195,8 @@ class GenerateCommand extends Command
 
         $currentVersion = $this->getLatestVersionFromGit();
         if ($currentVersion === null) {
-            $output->writeln('<comment>No version tags found, starting with 0.1.0</comment>');
-            $currentVersion = '0.1.0';
+            $output->writeln('<comment>No version tags found, starting with 0.0.0</comment>');
+            $currentVersion = '0.0.0';
         }
 
         return $versionGenerator->determineNextVersion($currentVersion, $commits);
@@ -204,7 +204,7 @@ class GenerateCommand extends Command
 
     private function getLatestVersionFromGit(): ?string
     {
-        $process = new Process(['git', 'tag', '-l', '--sort=-v:refname', 'v*']);
+        $process = new Process(['git', 'tag', '-l', '--sort=-v:refname']);
         $process->setWorkingDirectory(getcwd());
         $process->run();
 

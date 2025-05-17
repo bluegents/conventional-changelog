@@ -61,7 +61,7 @@ class GitService
             'git',
             'tag',
             '--sort=-v:refname',
-            '--format=%(refname:short)|%(taggerdate:iso)|%(objectname:short)',
+            '--format=%(refname:short)|%(creatordate:iso)|%(objectname:short)',
         ]);
         $process->setWorkingDirectory($this->repositoryPath);
 
@@ -71,6 +71,14 @@ class GitService
     public function getCommitsByRelease(?string $from = null, string $to = 'HEAD'): array
     {
         $tags = $this->getTags();
+
+        // Filter tags to only include version tags (e.g., 1.0.0, v1.0.0)
+        $tags = array_filter($tags, function($tag) {
+            return preg_match('/^v?\d+\.\d+\.\d+$/', $tag['name']);
+        });
+
+        // Re-index array after filtering
+        $tags = array_values($tags);
 
         if ($from) {
             $fromIndex = array_search($from, array_column($tags, 'name'));
@@ -106,8 +114,14 @@ class GitService
             $commits = $this->getCommits($previousTag ? $previousTag['name'] : null, $currentTag['name']);
 
             if (! empty($commits)) {
+                // Extract version number without 'v' prefix if present
+                $version = $currentTag['name'];
+                if (preg_match('/^v?(\d+\.\d+\.\d+)$/', $version, $matches)) {
+                    $version = $matches[1];
+                }
+
                 $releases[] = [
-                    'name' => $currentTag['name'],
+                    'name' => $version,
                     'date' => $currentTag['date'],
                     'commits' => $commits,
                 ];
