@@ -1,7 +1,7 @@
 {
     "name": "bluegents/conventional-changelog",
     "type": "library",
-    "licence": "proprietary",
+    "license": "proprietary",
     "description": "A simple library to generate a conventional changelog.",
     "keywords": [
         "changelog",
