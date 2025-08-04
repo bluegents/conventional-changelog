@@ -9,6 +9,7 @@
         "git",
         "release"
     ],
+    "version": "v1.1.2",
     "require": {
         "php": "^8.2",
         "symfony/console": "^7.2",
